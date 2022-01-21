@@ -2,8 +2,13 @@
 
 </script>
 <template>
-<h1>发现音乐...</h1>
-  <router-view></router-view>
+  <suspense>
+    <template #default>
+      <div>
+        <router-view></router-view>
+      </div>
+    </template>
+  </suspense>
 </template>
 <style scoped lang="scss">
 
