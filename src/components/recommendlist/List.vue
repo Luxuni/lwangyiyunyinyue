@@ -47,12 +47,16 @@ defineProps ({
 </template>
 <style scoped lang="scss">
 .m_list_container {
-  margin-top: 25px;
+  margin: 25px -1px 0 -1px;
+  background-color: #ede4df;
+  border: 1px solid #d1cdcd;
 
   .head {
     display: flex;
     align-items: center;
     justify-content: space-around;
+    margin-bottom: 10px;
+    margin-top: 10px;
 
     .icon {
       margin-right: 20px;
@@ -120,6 +124,8 @@ defineProps ({
         justify-content: end;
         font-size: 12px;
         background-color: #e6dcce;
+        padding: 10px;
+        height: 35px;
       }
 
       .odd {
