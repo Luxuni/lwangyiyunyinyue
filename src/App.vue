@@ -5,7 +5,7 @@ import SecondaryTabBar from "@/components/tabbar/SecondaryTabBar.vue";
 <template>
   <suspense>
     <template #default>
-      <div>
+      <div class="main_container">
         <main-tab-bar></main-tab-bar>
         <router-view name="SecondaryTabBar" #default="{Component}">
           <component :is="Component??SecondaryTabBar"></component>
@@ -22,12 +22,16 @@ import SecondaryTabBar from "@/components/tabbar/SecondaryTabBar.vue";
   </suspense>
 </template>
 <style scoped lang="scss">
-.m_view {
-  display: flex;
-  justify-content: center;
-  .s_view{
-    width:980px;
-    min-width: 980px;
+.main_container{
+  min-width: 980px;
+  .m_view {
+    display: flex;
+    justify-content: center;
+    background-color: #F5D7BE;
+    .s_view{
+      width:980px;
+    }
   }
 }
+
 </style>

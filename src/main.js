@@ -7,6 +7,7 @@ import router from './router'
 //添加基本css文件
 import '@/assets/css/base'
 import '@/assets/scss/base'
+import '@/assets/font/font'
 const app=createApp(App)
 app.use(router)
 app.use(ElementPlus)

@@ -30,7 +30,12 @@ a {
     color: var(--color-text);
     text-decoration: none;
 }
-
+button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
 
 .clear-fix::after {
     clear: both;
@@ -73,7 +78,7 @@ li {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #B2281E;
+    background-color: #be3328;
     border-radius: 6px;
 }
 
