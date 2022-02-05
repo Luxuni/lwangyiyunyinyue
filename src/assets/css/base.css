@@ -36,6 +36,9 @@ button {
     padding: 0;
     cursor: pointer;
 }
+img{
+    border: none;
+}
 
 .clear-fix::after {
     clear: both;

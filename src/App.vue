@@ -1,6 +1,7 @@
 <script setup>
 import MainTabBar from "@/components/tabbar/MainTabBar.vue";
 import SecondaryTabBar from "@/components/tabbar/SecondaryTabBar.vue";
+import Player from "@/components/playmusic/Player.vue";
 </script>
 <template>
   <suspense>
@@ -17,21 +18,23 @@ import SecondaryTabBar from "@/components/tabbar/SecondaryTabBar.vue";
             </router-view>
           </div>
         </div>
+        <player></player>
       </div>
     </template>
   </suspense>
 </template>
 <style scoped lang="scss">
-.main_container{
+.main_container {
   min-width: 980px;
+
   .m_view {
     display: flex;
     justify-content: center;
     background-color: #F5D7BE;
-    .s_view{
-      width:980px;
+
+    .s_view {
+      width: 980px;
     }
   }
 }
-
 </style>

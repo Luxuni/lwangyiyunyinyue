@@ -39,7 +39,7 @@ defineProps ({
           </div>
         </li>
         <li class="more">
-          <router-link :to="{name:'LeaderBoard'}">查看全部 ></router-link>
+          <router-link :to="{name:'LeaderBoard'}"><span>查看全部 ></span></router-link>
         </li>
       </ul>
     </div>
@@ -121,7 +121,8 @@ defineProps ({
       }
 
       .more {
-        justify-content: end;
+        display: flex;
+        justify-content: flex-end;
         font-size: 12px;
         background-color: #e6dcce;
         padding: 10px;

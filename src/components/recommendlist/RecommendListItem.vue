@@ -1,8 +1,13 @@
 <script setup>
 import {defineProps} from "vue";
+import {useStore} from "vuex";
+const store = useStore ();
 defineProps ({
   standardMessages: {}
 });
+const willProcessPlaylist = message => {
+  store.dispatch('playlist/processPlaylist',message)
+};
 </script>
 <template>
   <div class="m_list_container">
@@ -15,17 +20,18 @@ defineProps ({
               <use xlink:href="#icon-tinggeshiqu"></use>
             </svg>
             <p class="list_item_play_count">
-              <span class="list_item_count">{{ message.artistName??message.playCount }}</span>
+              <span class="list_item_count">{{ message.artistName ?? message.playCount }}</span>
             </p>
           </div>
-          <span class="play_btn">
+          <span class="play_btn"
+                @click="willProcessPlaylist(message)">
              <svg class="icon play_icon" aria-hidden="true">
             <use xlink:href="#icon-bofang"></use>
           </svg>
           </span>
         </div>
       </div>
-      <p class="list_item_name">{{ message.albumName??message.name }}</p>
+      <p class="list_item_name">{{ message.albumName ?? message.name }}</p>
     </div>
   </div>
 </template>

@@ -44,18 +44,13 @@ const standardAlbums = album.products;
 // });
 //请求榜单数据
 let {data: daily} = await getList (10, 0, 1, "daily");
-console.log (daily);
 daily.products = daily.products.splice (10);
 const dailyLists = daily.products;
 let {data: weekly} = await getList (10, 0, 1, "week");
-console.log (weekly);
 weekly.products = weekly.products.splice (10);
 const weeklyLists = weekly.products;
-let  {data:year} = await getList (null, null, 1, "year");
-console.log (year);
-const yearLists = year.products
-
-
+let {data: year} = await getList (null, null, 1, "year");
+const yearLists = year.products;
 </script>
 <template>
   <!--  <suspense>-->
