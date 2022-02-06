@@ -9,6 +9,7 @@ import moment from "moment";
 import "@/assets/css/base";
 import "@/assets/scss/base";
 import "@/assets/font/font";
+import 'animate.css';
 import store from "./store";
 const app = createApp (App);
 app.use (router);

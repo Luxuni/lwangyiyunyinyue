@@ -20,8 +20,7 @@
 }
 
 .el-table th.el-table__cell {
-  background-color: rgba(130, 1, 5, 0.7);
-
+  background-color: rgba(130, 1, 5, 0.7)!important;
 }
 
 .el-table, .el-table__empty-text, {
@@ -65,8 +64,32 @@
 .el-popper.is-light {
   background-color: #000000;
   border: none;
-  p{
+
+  p {
     color: #ffffff;
     font-size: 12px;
   }
+}
+::-webkit-scrollbar {
+  width: 7px;
+  height: 5px;
+  border-radius:15px;
+  -webkit-border-radius:  15px;
+}
+::-webkit-scrollbar-track-piece {
+  background-color: rgba(130, 1, 5, .5);
+  border-radius:15px;
+  -webkit-border-radius:  15px;
+}
+::-webkit-scrollbar-thumb:vertical {
+  height: 5px;
+  background-color: #9B1509;
+  border-radius: 15px;
+  -webkit-border-radius:  15px;
+}
+::-webkit-scrollbar-thumb:horizontal {
+  width: 7px;
+  background-color: #9B1509;
+  border-radius:  15px;
+  -webkit-border-radius: 15px;
 }

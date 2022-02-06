@@ -168,6 +168,51 @@ const nextSong = () => {
     pointer.value += 1;
   }
 };
+/*播放模式选择*/
+const playFunctionPointerIcon = ref ("#icon-xunhuanbofang");//需要显示的播放图标
+const playFunctionPointer = ref (0);
+//管理播放图标
+const changePlayFunctionPointerIcon = () => {
+  if (playFunctionPointer.value === 0) {
+    playFunctionPointerIcon.value = "#icon-xunhuanbofang";
+    //循环播放
+  } else if (playFunctionPointer.value === 1) {
+    playFunctionPointerIcon.value = "#icon-danquxunhuan";
+    //单曲循环
+  } else {
+    playFunctionPointerIcon.value = "#icon-suijibofang";
+    //随机播放
+  }
+};
+//管理播放模式
+const changePlayFunctionPointer = () => {
+  if (playFunctionPointer.value === 2) {
+    playFunctionPointer.value = 0;
+  } else {
+    playFunctionPointer.value++;
+  }
+  changePlayFunctionPointerIcon ();
+};
+const rd = (n, m) => {//获取一定范围内的随机数的方法
+  let c = m - n + 1;
+  return Math.floor (Math.random () * c + n);
+};
+const randomPlay = () => {
+  return rd (0, toRaw (store.state.playlist.playlist).length - 1);
+};
+const end = () => {
+  if (playFunctionPointer.value === 0) {
+    nextSong ();
+    //循环播放
+  } else if (playFunctionPointer.value === 1) {
+    audio.value.currentTime = 0;//重新开始播放
+    play ();
+    //单曲循环
+  } else {
+    pointer.value = randomPlay ();
+    //随机播放
+  }
+};
 const passPointer = value => {
   play ();
 };
@@ -183,13 +228,15 @@ const showPlaylist = () => {
       ref="audio"
       @durationchange="getAllTime"
       @timeupdate="getNowTime"
+      @ended="end"
       :src="playlist[pointer]?.url">
     </audio>
-    <div class="audio-container">
+    <div :class="{audio_container:!isShowPlaylist,audio_containers:isShowPlaylist}">
       <play-list class="playlist"
+                 ref="playList"
                  v-model:passPointer="pointer"
                  @update:passPointer="passPointer"
-                 v-show="isShowPlaylist"></play-list>
+      ></play-list>
       <!--      当前歌曲图片-->
       <img v-show="playlist.length>0"
            ref="img"
@@ -240,6 +287,10 @@ const showPlaylist = () => {
               type="info"
               effect="plain">{{ playAllTime }}
       </el-tag>
+      <!--      切换播放模式-->
+      <svg class="icon play_function" aria-hidden="true" @click="changePlayFunctionPointer">
+        <use :xlink:href="playFunctionPointerIcon"></use>
+      </svg>
       <!--      播放歌单-->
       <svg class="icon playlist_icon" aria-hidden="true" @click="showPlaylist">
         <use xlink:href="#icon-yinlegedanyinfu"></use>
@@ -260,8 +311,6 @@ const showPlaylist = () => {
           v-show="isVolume"
           class="volume_bar"
           v-model="volume"
-          vertical
-          height="100px"
           @input="changeVolume">
         </el-slider>
       </div>
@@ -269,7 +318,7 @@ const showPlaylist = () => {
   </div>
 </template>
 <style scoped lang="scss">
-.audio-container {
+.audio_container {
   display: flex;
   position: relative;
   width: 100vw;
@@ -277,13 +326,14 @@ const showPlaylist = () => {
   background-color: #9B1509;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 
   .playlist {
     position: absolute;
     bottom: 60px;
   }
 
-  .previous_song, .whether_player, .next_song, .playlist_icon {
+  .previous_song, .whether_player, .next_song, .playlist_icon, .play_function {
     padding: 5px;
     margin: 0 10px;
     font-size: 2.3em;
@@ -335,24 +385,100 @@ const showPlaylist = () => {
   .sound_control {
     position: relative;
     margin: 0 20px;
-    height: 60px;
-    //width: 1px;
 
     .mute {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
       font-size: 2em;
       cursor: pointer;
-
     }
 
     .volume_bar {
+      width: 100px;
       position: absolute;
-      top: -85px;
-      left: -19px;
-      z-index: 999999;
+      right: -120px;
+      bottom: 50%;
+      transform: translateY(50%);
+    }
+  }
+}
+
+.audio_containers {
+  display: flex;
+  position: relative;
+  width: 100vw;
+  height: 60px;
+  background-color: #9B1509;
+  justify-content: center;
+  align-items: center;
+
+  .playlist {
+    position: absolute;
+    bottom: 60px;
+  }
+
+  .previous_song, .whether_player, .next_song, .playlist_icon, .play_function {
+    padding: 5px;
+    margin: 0 10px;
+    font-size: 2.3em;
+    border-radius: 16px;
+    transition: all 0.2s linear;
+    cursor: pointer;
+    color: #000000;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+
+  .the_song_name, .the_artists {
+    width: 75px;
+    margin: 0 10px;
+    text-align: center;
+    color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+
+  .segmentation {
+    width: 30px;
+    text-align: center;
+  }
+
+  img {
+    height: 40px;
+    width: 40px;
+    margin: 0 10px;
+    border-radius: 20px;
+    animation: 5s rotate infinite linear;
+    animation-play-state: running;
+  }
+
+  .playback_progress {
+    width: 200px;
+    margin: 0 10px;
+  }
+
+  .max_time {
+    margin: 10px;
+  }
+
+  .sound_control {
+    position: relative;
+    margin: 0 20px;
+
+    .mute {
+      font-size: 2em;
+      cursor: pointer;
+    }
+
+    .volume_bar {
+      width: 100px;
+      position: absolute;
+      right: -120px;
+      bottom: 50%;
+      transform: translateY(50%);
     }
   }
 }
