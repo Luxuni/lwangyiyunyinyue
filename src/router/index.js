@@ -80,6 +80,46 @@ const router = createRouter ({
                 SecondaryTabBar: () => import("@/components/tabbar/DefaultSecondaryTabBar.vue"),
                 default: () => import("@/main_views/DownloadApps.vue")
             }
+        },
+        {
+            path: "/user/home",
+            name: "UserHome",
+            components: {
+                SecondaryTabBar: () => import("@/components/tabbar/DefaultSecondaryTabBar.vue"),
+                default: () => import("@/main_views/UserHome.vue")
+            }
+        },
+        {
+            path: "/user/level",
+            name: "UserLevel",
+            components: {
+                SecondaryTabBar: () => import("@/components/tabbar/DefaultSecondaryTabBar.vue"),
+                default: () => import("@/main_views/UserLevel.vue")
+            }
+        },
+        {
+            path: "/user/follow",
+            name: "UserFollow",
+            components: {
+                SecondaryTabBar: () => import("@/components/tabbar/DefaultSecondaryTabBar.vue"),
+                default: () => import("@/main_views/UserFollow.vue")
+            }
+        },
+        {
+            path: "/user/followed",
+            name: "UserFans",
+            components: {
+                SecondaryTabBar: () => import("@/components/tabbar/DefaultSecondaryTabBar.vue"),
+                default: () => import("@/main_views/UserFans.vue")
+            }
+        },
+        {
+            path: "/user/event",
+            name: "UserEvent",
+            components: {
+                SecondaryTabBar: () => import("@/components/tabbar/DefaultSecondaryTabBar.vue"),
+                default: () => import("@/main_views/UserEvent.vue")
+            }
         }
     ]
 });

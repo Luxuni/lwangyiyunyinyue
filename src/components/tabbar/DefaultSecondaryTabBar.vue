@@ -3,7 +3,6 @@
 <template>
   <div class="s_top">
     <div class="s_top_items">
-
     </div>
   </div>
 </template>

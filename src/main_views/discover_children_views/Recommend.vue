@@ -5,12 +5,17 @@ import RecommendNavBar from "@/components/listnavbar/RecommendNavBar.vue";
 import RecommendListItem from "@/components/recommendlist/RecommendListItem.vue";
 import {getPersonalized} from "@/network/recommendlist/recommendList";
 import LoginBox from "@/components/login/LoginBox.vue";
+import UserBox from "@/components/login/UserBox.vue";
 import ResidentSinger from "@/components/residentsinger/ResidentSinger.vue";
 import {getAlbumList} from "@/network/recommendlist/albumlist";
 import AlbumList from "@/components/recommendlist/AlbumList.vue";
 import PopularAnchors from "@/components/residentsinger/PopularAnchors.vue";
 import List from "@/components/recommendlist/List.vue";
 import {getList} from "@/network/recommendlist/list";
+import {computed, reactive} from "vue";
+import {getCookie} from "@/until/cookie";
+import {useStore} from "vuex";
+const store = useStore ();
 const titles = [
   {url: "SingList", name: "华语"},
   {url: "SingList", name: "流行"},
@@ -18,16 +23,26 @@ const titles = [
   {url: "SingList", name: "民谣"},
   {url: "SingList", name: "电子"}
 ];
-const {data: res} = await getPersonalized (8);
-const standardItems = res.result;
-//处理歌单数据的播放量
-standardItems.forEach (item => {
-  if (item.playCount / 10000 > 1) {
-    item.playCount = Math.round ((item.playCount / 10000)) + "万";
-  } else {
-    item.playCount = item.playCount.toString ();
-  }
-});
+const isLogin=computed(()=>{
+  return store.state.user.isLogin
+})
+const recommendMessages = async () => {
+  const {data: res} = await getPersonalized (8, getCookie ());
+  const standardItems = res.result;
+  //处理歌单数据的播放量
+  standardItems.forEach (item => {
+    if (item.playCount / 10000 > 1) {
+      item.playCount = Math.round ((item.playCount / 10000)) + "万";
+    } else {
+      item.playCount = item.playCount.toString ();
+    }
+  });
+  return standardItems;
+};
+let standardItems = reactive (await recommendMessages ());
+const UpdateTheRecommendedPlaylist = async () => {
+  standardItems = reactive (await recommendMessages ());
+};
 const {data: album} = await getAlbumList (10);
 const standardAlbums = album.products;
 // let keyMap = {
@@ -104,7 +119,9 @@ const yearLists = year.products;
       <div class="recommend_right_container">
         <!--      推广app组件-->
         <download></download>
-        <login-box></login-box>
+        <login-box @UpdateTheRecommendedPlaylist="UpdateTheRecommendedPlaylist"
+                   v-if="isLogin===false"></login-box>
+        <user-box v-else></user-box>
         <resident-singer class="resident_singer"></resident-singer>
         <popular-anchors class="resident_singer"></popular-anchors>
       </div>
