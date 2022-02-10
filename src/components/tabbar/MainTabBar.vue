@@ -42,6 +42,7 @@ const loadAll = async (search) => {
     //   type: "error"
     // });
     return [];
+
   }
   return result.result;
 };
