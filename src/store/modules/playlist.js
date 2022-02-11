@@ -25,7 +25,6 @@ export default {
         ADD_SINGLE (state, value) {
             state.playlist.unshift (value);
             state.playlist = unique (state.playlist);
-            console.log (unique (state.playlist));
         },
         /*删除歌单中指定的单曲*/
         DELETE_THIS (state, value) {

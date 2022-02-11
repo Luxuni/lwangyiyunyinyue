@@ -34,28 +34,40 @@ const userDetail = computed (() => {
 });
 const loadAll = async (search) => {
   const {data: result} = await getSearchSuggest (search);
-  console.log (result);
   if (result.code !== 200) {
     // ElMessage ({
     //   message: "抱歉，没有查询到",
     //   grouping: true,
     //   type: "error"
     // });
-    return [];
-
+    return {};
+  } else {
+    if (result.result.songs === undefined) {
+      ElMessage ({
+        message: "抱歉，没有查询到",
+        grouping: true,
+        type: "warning"
+      });
+      return {};
+    } else {
+      return result.result;
+    }
   }
-  return result.result;
 };
 /*根据关键字查询数据*/
 const querySearchAsync = async (queryString, callback) => {
   await getData (queryString).then ((result) => {
-    if (queryString.length > 0) {
-      const results = queryString
-        ? createFilter (result?.songs)
-        : [];
-      callback (results);
-    } else {
+    if (result?.songs === undefined) {
       callback ([]);
+    } else {
+      if (queryString.length > 0) {
+        const results = queryString
+          ? createFilter (result?.songs)
+          : [];
+        callback (results);
+      } else {
+        callback ([]);
+      }
     }
   });
 };
