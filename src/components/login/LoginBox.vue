@@ -18,6 +18,7 @@ const username = ref ("15755967688");
 const password = ref ("200223252@lml");
 const emit = defineEmits (["UpdateTheRecommendedPlaylist"]);
 const willLogin = async () => {
+  isShow.value = false;
   const {data: res} = await loginInterface (username.value, password.value);
   setCookie (res.cookie);//保存cookie
   await store.dispatch ("user/getUserMessage", res.account.id);

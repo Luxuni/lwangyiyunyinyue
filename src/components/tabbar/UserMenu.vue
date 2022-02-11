@@ -1,4 +1,8 @@
 <script setup>
+import {useStore} from "vuex";
+import {removeCookie} from "@/until/cookie";
+import {quit} from "@/network/login/quit";
+const store = useStore ();
 const menuMessages = [
   {title: "我的主页", icon: "#icon-yonghuming", url: ""},
   {title: "我的消息", icon: "#icon-xiaoxi", url: ""},
@@ -8,13 +12,21 @@ const menuMessages = [
   {title: "实名认证", icon: "#icon-shimingrenzheng", url: ""},
   {title: "退出", icon: "#icon-tuichu", url: ""}
 ];
+const isQuit = async title => {
+  if (title === "退出") {
+    await quit ();
+    store.commit ("user/QUIT", false);
+    removeCookie ();
+    await store.dispatch ("recommendlist/getRecommendListMessages", 8);
+  }
+};
 </script>
 <template>
   <div class="main_menu_container">
     <ul>
       <li v-for="menuMessage of menuMessages">
         <router-link to="">
-          <div>
+          <div @click="isQuit(menuMessage.title)">
             <svg class="icon" aria-hidden="true" style="color: #fff;">
               <use :xlink:href="menuMessage.icon"></use>
             </svg>

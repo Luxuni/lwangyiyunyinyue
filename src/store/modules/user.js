@@ -13,6 +13,9 @@ export default {
         },
         WILL_SHOW_LOGIN_WINDOW (state, value) {
             state.isShowLoginWindow = value;
+        },
+        QUIT (state, value) {
+            state.isLogin = value;
         }
     },
     actions: {
