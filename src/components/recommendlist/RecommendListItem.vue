@@ -6,12 +6,14 @@ defineProps ({
   standardMessages: {}
 });
 const willProcessPlaylist = message => {
-  store.dispatch('playlist/processPlaylist',message)
+  store.dispatch ("playlist/processPlaylist", message);
 };
 </script>
 <template>
   <div class="m_list_container">
-    <div class="list_item_container" v-for="message of standardMessages" :key="message.id">
+    <div class="list_item_container"
+         v-for="message of standardMessages"
+         :key="message.id">
       <div class="list_item_img">
         <img :src="message.picUrl" alt="">
         <div class="list_item_play_count_container">

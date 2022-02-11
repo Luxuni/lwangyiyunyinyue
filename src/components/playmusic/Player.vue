@@ -3,12 +3,13 @@ import PlayList from "@/components/playmusic/PlayList.vue";
 import {computed, ref, toRaw} from "vue";
 import {useStore} from "vuex";
 const store = useStore ();
-/*拿取vuex中的将要播放的歌单数据*/
-const playlist = computed (() => {
-  return store.state.playlist.playlist;
-});
 /*定义当前播放歌曲的位置指针*/
 const pointer = ref (0);
+/*拿取vuex中的将要播放的歌单数据*/
+const playlist = computed (() => {
+  pointer.value = 0;
+  return store.state.playlist.playlist;
+});
 /*获取audio的DOM*/
 const audio = ref (null);
 /*定义播放进度条的绑定数据*/
@@ -121,38 +122,6 @@ const volumeSwitch = () => {
     volumeIcon.value = "#icon-Soundshengyin2";
   }
 };
-/*控制音量条显示的方法*/
-let enterVolumeIcon = false;
-let enterVolume = false;
-let timing;
-const mainIsShowVolume = () => {
-  if (enterVolumeIcon === true) {
-    isVolume.value = true;
-  } else {
-    if (timing) {
-      clearTimeout (timing);
-    }
-    timing = setTimeout (() => {
-      isVolume.value = enterVolume === true;
-    }, 2000);
-  }
-};
-const showVolumeIcon = () => {
-  enterVolumeIcon = true;
-  mainIsShowVolume ();
-};
-const hideVolumeIcon = () => {
-  enterVolumeIcon = false;
-  mainIsShowVolume ();
-};
-const showVolume = () => {
-  enterVolume = true;
-  mainIsShowVolume ();
-};
-const hideVolume = () => {
-  enterVolume = false;
-  mainIsShowVolume ();
-};
 /*切换上一首以及下一首的两个方法*/
 const previousSong = () => {
   if (pointer.value === 0) {
@@ -202,7 +171,12 @@ const randomPlay = () => {
 };
 const end = () => {
   if (playFunctionPointer.value === 0) {
-    nextSong ();
+    if (toRaw (playlist.value).length === 1) {
+      audio.value.currentTime = 0;//重新开始播放
+      play ();
+    } else {
+      nextSong ();
+    }
     //循环播放
   } else if (playFunctionPointer.value === 1) {
     audio.value.currentTime = 0;//重新开始播放
@@ -296,19 +270,14 @@ const showPlaylist = () => {
         <use xlink:href="#icon-yinlegedanyinfu"></use>
       </svg>
       <div class="sound_control"
-           @mouseenter="showVolumeIcon"
-           @mouseleave="hideVolumeIcon">
+      >
         <!--      静音按钮-->
         <svg class="icon mute"
              aria-hidden="true"
              @click="volumeSwitch">
           <use :xlink:href="volumeIcon"></use>
         </svg>
-        <!--      音量条-->
         <el-slider
-          @mouseenter="showVolume"
-          @mouseleave="hideVolume"
-          v-show="isVolume"
           class="volume_bar"
           v-model="volume"
           @input="changeVolume">
@@ -386,17 +355,25 @@ const showPlaylist = () => {
     position: relative;
     margin: 0 20px;
 
+    &:hover {
+      .volume_bar {
+        display: flex;
+      }
+    }
+
     .mute {
       font-size: 2em;
       cursor: pointer;
+      margin-right: 20px;
     }
 
     .volume_bar {
       width: 100px;
       position: absolute;
-      right: -120px;
+      right: -100px;
       bottom: 50%;
       transform: translateY(50%);
+      display: none;
     }
   }
 }
@@ -468,17 +445,25 @@ const showPlaylist = () => {
     position: relative;
     margin: 0 20px;
 
+    &:hover {
+      .volume_bar {
+        display: flex;
+      }
+    }
+
     .mute {
       font-size: 2em;
       cursor: pointer;
+      margin-right: 20px;
     }
 
     .volume_bar {
       width: 100px;
       position: absolute;
-      right: -120px;
+      right: -100px;
       bottom: 50%;
       transform: translateY(50%);
+      display: none;
     }
   }
 }

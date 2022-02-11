@@ -6,6 +6,7 @@ import {computed, reactive, ref, toRaw, watch} from "vue";
 import {useStore} from "vuex";
 import {getSearchSuggest} from "@/network/search/searchsuggest";
 import {ElMessage} from "element-plus";
+import UserMenu from "./UserMenu.vue";
 const store = useStore ();
 const messages = reactive ([
   {url: "/discover", mainContent: "发现音乐", arrow: false},
@@ -134,6 +135,7 @@ const handleSelect = (item) => {
       <div class="user_avatar"
            v-else>
         <img :src="userDetail.profile.avatarUrl" alt="">
+        <user-menu class="user_menu"></user-menu>
       </div>
     </div>
   </div>
@@ -198,14 +200,30 @@ const handleSelect = (item) => {
     }
 
     .user_avatar {
+      position: relative;
       display: flex;
       align-items: center;
       padding: 0 20px;
+
+      &:hover {
+        .user_menu {
+          display: block;
+        }
+      }
 
       img {
         height: 30px;
         width: 30px;
         border-radius: 15px;
+      }
+
+      .user_menu {
+        position: absolute;
+        top: 49px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 999999999;
+        display: none;
       }
     }
   }

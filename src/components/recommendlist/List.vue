@@ -1,9 +1,25 @@
 <script setup>
 import {defineProps, ref} from "vue";
-defineProps ({
+import {useStore} from "vuex";
+const store = useStore ();
+const props = defineProps ({
   title: {},
   lists: {}
 });
+const willPlay = list => {
+  console.log (list);
+  let keyMap = {
+    "albumId": "id"
+  };
+  for (let key in list) {
+    let newKey = keyMap[key];
+    if (newKey) {
+      list[newKey] = list[key];
+      delete list[key];
+    }
+  }
+  store.dispatch('playlist/processPlaylist',list)
+};
 </script>
 <template>
   <div class="m_list_container">
@@ -27,7 +43,7 @@ defineProps ({
             {{ list.albumName }}
           </div>
           <div class="right">
-            <svg class="icon" aria-hidden="true">
+            <svg class="icon" aria-hidden="true" @click="willPlay(list)">
               <use xlink:href="#icon-bofang"></use>
             </svg>
             <svg class="icon play_icon" aria-hidden="true">

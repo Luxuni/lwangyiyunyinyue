@@ -3,7 +3,6 @@ import Banner from "@/components/banner/Banner.vue";
 import Download from "@/components/download/Download.vue";
 import RecommendNavBar from "@/components/listnavbar/RecommendNavBar.vue";
 import RecommendListItem from "@/components/recommendlist/RecommendListItem.vue";
-import {getPersonalized} from "@/network/recommendlist/recommendList";
 import LoginBox from "@/components/login/LoginBox.vue";
 import UserBox from "@/components/login/UserBox.vue";
 import ResidentSinger from "@/components/residentsinger/ResidentSinger.vue";
@@ -12,7 +11,7 @@ import AlbumList from "@/components/recommendlist/AlbumList.vue";
 import PopularAnchors from "@/components/residentsinger/PopularAnchors.vue";
 import List from "@/components/recommendlist/List.vue";
 import {getList} from "@/network/recommendlist/list";
-import {computed, reactive} from "vue";
+import {computed, reactive, toRaw} from "vue";
 import {getCookie} from "@/until/cookie";
 import {useStore} from "vuex";
 const store = useStore ();
@@ -23,25 +22,33 @@ const titles = [
   {url: "SingList", name: "民谣"},
   {url: "SingList", name: "电子"}
 ];
-const isLogin=computed(()=>{
-  return store.state.user.isLogin
-})
-const recommendMessages = async () => {
-  const {data: res} = await getPersonalized (8, getCookie ());
-  const standardItems = res.result;
-  //处理歌单数据的播放量
-  standardItems.forEach (item => {
-    if (item.playCount / 10000 > 1) {
-      item.playCount = Math.round ((item.playCount / 10000)) + "万";
-    } else {
-      item.playCount = item.playCount.toString ();
-    }
-  });
-  return standardItems;
-};
-let standardItems = reactive (await recommendMessages ());
-const UpdateTheRecommendedPlaylist = async () => {
-  standardItems = reactive (await recommendMessages ());
+const isLogin = computed (() => {
+  return store.state.user.isLogin;
+});
+const standardItems = computed (() => {
+  return store.state.recommendlist.standardItems;
+});
+store.dispatch ("recommendlist/getRecommendListMessages", 8);
+// const recommendMessages = async () => {
+//   const {data: res} = await getPersonalized (8, getCookie ());
+//   const standardItems = res.result;
+//   //处理歌单数据的播放量
+//   standardItems.forEach (item => {
+//     if (item.playCount / 10000 > 1) {
+//       item.playCount = Math.round ((item.playCount / 10000)) + "万";
+//     } else {
+//       item.playCount = item.playCount.toString ();
+//     }
+//   });
+//   return standardItems;
+// };
+// console.log (await recommendMessages ());
+// let standardItems = reactive ([]);
+// standardItems = await recommendMessages ();
+const UpdateTheRecommendedPlaylist = () => {
+  // standardItems = await recommendMessages ();
+  // console.log (standardItems);
+  store.dispatch ("recommendlist/getRecommendListMessages", 8);
 };
 const {data: album} = await getAlbumList (10);
 const standardAlbums = album.products;
@@ -58,13 +65,13 @@ const standardAlbums = album.products;
 //   }
 // });
 //请求榜单数据
-let {data: daily} = await getList (10, 0, 1, "daily");
+let {data: daily} = await getList (10, 0, 1, "daily", getCookie ());
 daily.products = daily.products.splice (10);
 const dailyLists = daily.products;
-let {data: weekly} = await getList (10, 0, 1, "week");
+let {data: weekly} = await getList (10, 0, 1, "week", getCookie ());
 weekly.products = weekly.products.splice (10);
 const weeklyLists = weekly.products;
-let {data: year} = await getList (null, null, 1, "year");
+let {data: year} = await getList (null, null, 1, "year", getCookie ());
 const yearLists = year.products;
 </script>
 <template>
@@ -87,7 +94,7 @@ const yearLists = year.products;
           </template>
         </recommend-nav-bar>
         <recommend-list-item class="recommend-list-item"
-                             :standardMessages="standardItems"></recommend-list-item>
+                             v-model:standardMessages="standardItems"></recommend-list-item>
         <recommend-nav-bar class="recommend_nav_bar"
                            mTitle="m_title"
                            mUrl="NewDiscs"

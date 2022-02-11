@@ -1,5 +1,6 @@
 import {getPlaylistTrackAll} from "@/network/songs/getplaylisttrackall";
 import {getSongUrl} from "@/network/songs/getsongurl";
+import {ElMessage} from "element-plus";
 /*es5歌单去重方法，以后改进*/
 function unique (arr) {
     for (let i = 0; i < arr.length; i++) {
@@ -36,6 +37,13 @@ export default {
         async processPlaylist (store, value) {
             const {data: res} = await getPlaylistTrackAll (value.id);
             const allId = res.songs.map (item => item.id).join (",");
+            if (res.songs.length === 0){
+                ElMessage ({
+                    message: "请先登陆",
+                    grouping: true,
+                    type: "warning"
+                });
+            }
             const {data: allUrls} = await getSongUrl (allId);
             const informationNeeded = res.songs.map (item => {
                 return {

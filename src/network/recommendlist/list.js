@@ -1,5 +1,5 @@
 import {request} from "@/network/request";
-function getList (limit, offset, albumType, type) {
+function getList (limit, offset, albumType, type,cookie) {
     return request ({
         url: "/album/songsaleboard",
         params: {
@@ -7,6 +7,7 @@ function getList (limit, offset, albumType, type) {
             offset: offset,
             albumType: albumType,
             type: type,
+            cookie:cookie
         }
     });
 }
