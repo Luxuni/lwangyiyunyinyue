@@ -26,7 +26,6 @@ export default {
                 return standardItems;
             };
             let standardItems = await recommendMessages ();
-            console.log (standardItems);
             store.commit ("GET_RECOMMEND_LIST_MESSAGES", standardItems);
         }
     },

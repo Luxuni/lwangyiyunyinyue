@@ -7,18 +7,22 @@ import Player from "@/components/playmusic/Player.vue";
   <suspense>
     <template #default>
       <div class="main_container">
-        <main-tab-bar></main-tab-bar>
-        <router-view name="SecondaryTabBar" #default="{Component}">
-          <component :is="Component??SecondaryTabBar"></component>
-        </router-view>
-        <div class="m_view">
-          <div class="s_view">
-            <router-view #default="{Component}">
-              <component :is="Component"></component>
-            </router-view>
+        <div class="content">
+          <main-tab-bar></main-tab-bar>
+          <router-view name="SecondaryTabBar" #default="{Component}">
+            <component :is="Component??SecondaryTabBar"></component>
+          </router-view>
+          <div class="m_view">
+            <div class="s_view">
+              <router-view #default="{Component}">
+                <component :is="Component"></component>
+              </router-view>
+            </div>
           </div>
         </div>
-        <player></player>
+        <div class="footer">
+          <player></player>
+        </div>
       </div>
     </template>
   </suspense>
@@ -26,15 +30,28 @@ import Player from "@/components/playmusic/Player.vue";
 <style scoped lang="scss">
 .main_container {
   min-width: 980px;
+  min-height: 100%;
 
-  .m_view {
-    display: flex;
-    justify-content: center;
-    background-color: #F5D7BE;
+  .content {
+    height: calc(100% - 60px);
 
-    .s_view {
-      width: 980px;
+    .m_view {
+      display: flex;
+      justify-content: center;
+      background-color: #F5D7BE;
+
+      .s_view {
+        width: 980px;
+      }
     }
+  }
+
+  .footer {
+    position: fixed;
+    height: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 }
 </style>

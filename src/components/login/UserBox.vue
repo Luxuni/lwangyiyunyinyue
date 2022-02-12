@@ -5,7 +5,6 @@ const store = useStore ();
 const userDetail = computed (() => {
   return store.state.user.userDetail;
 });
-console.log (toRaw (userDetail.value));
 </script>
 <template>
   <div class="m_login_box_container">
