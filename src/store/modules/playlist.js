@@ -1,6 +1,7 @@
 import {getPlaylistTrackAll} from "@/network/songs/getplaylisttrackall";
 import {getSongUrl} from "@/network/songs/getsongurl";
 import {ElMessage} from "element-plus";
+import {getSongDetail} from "../../network/songs/getsongurl";
 /*es5歌单去重方法，以后改进*/
 function unique (arr) {
     for (let i = 0; i < arr.length; i++) {
@@ -25,6 +26,7 @@ export default {
         },
         ADD_SINGLE (state, value) {
             state.playlist.unshift (value);
+            //去重
             state.playlist = unique (state.playlist);
         },
         /*删除歌单中指定的单曲*/
@@ -60,19 +62,22 @@ export default {
             store.commit ("PROCESS_PLAYLIST", informationNeeded);
         },
         /*整理单曲的数据*/
-        async getSingleUrl (store, value) {
+        async getPlaylistDetail(store,value){
+            const {data: res} = await getSongDetail (value.id);
             const {data: allUrls} = await getSongUrl (value.id);
-            const singleInformationNeeded = {
-                id: value.id,
-                picUrl: value.album.artist.img1v1Url,
-                name: value.value,
-                ar: value.artists.map (item => item.name).join (" "),
-                arId: value.artists.map (item => item.id),
-                url: allUrls.data[0].url,
-                /*控制删除弹出框的显示与否，不重要的属性*/
-                deletePopover: false
-            };
-            store.commit ("ADD_SINGLE", singleInformationNeeded);
+            const singleInformationNeeded = res.songs.map (item => {
+                return {
+                    id: item.id,
+                    picUrl: item.al.picUrl,
+                    name: item.name,
+                    ar: item.ar.map (item => item.name).join (" "),
+                    arId: item.ar.map (item => item.id),
+                    url: allUrls.data.filter (element => element.id === item.id)[0].url,
+                    /*控制删除弹出框的显示与否，不重要的属性*/
+                    deletePopover: false
+                };
+            });
+            store.commit ("ADD_SINGLE", ...singleInformationNeeded);
         }
     },
     modules: {}

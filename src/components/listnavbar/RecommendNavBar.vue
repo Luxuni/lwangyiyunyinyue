@@ -24,6 +24,9 @@ defineProps ({
         :class="{'s_title':index<sTitle.length-1,'s_title_last':index===sTitle.length-1}">
         {{ title.name }}
       </router-link>
+      <span>
+      <slot name="songs_count"></slot>
+      </span>
     </div>
   </span>
     <router-link :to="{name:mUrl}">
@@ -76,6 +79,9 @@ defineProps ({
     }
 
     .s_title_container {
+      span{
+        font-size: 12px;
+      }
       .s_title, .s_title_last {
         padding: 0 15px;
         font-size: 12px;

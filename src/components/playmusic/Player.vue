@@ -296,7 +296,7 @@ const showPlaylist = () => {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-
+  min-width: 980px;
   .playlist {
     position: absolute;
     bottom: 60px;
@@ -386,7 +386,7 @@ const showPlaylist = () => {
   background-color: #9B1509;
   justify-content: center;
   align-items: center;
-
+  min-width: 980px;
   .playlist {
     position: absolute;
     bottom: 60px;

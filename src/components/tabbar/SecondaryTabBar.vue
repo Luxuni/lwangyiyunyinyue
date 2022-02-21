@@ -16,6 +16,7 @@ import SecondaryTabBarItem from "@/components/secondary_tab_bar_item/SecondaryTa
 <style scoped lang="scss">
 .s_top {
   background-color: #C20907;
+  min-width: 980px;
 
   .s_top_items {
     display: flex;

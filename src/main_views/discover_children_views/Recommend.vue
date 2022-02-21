@@ -29,42 +29,8 @@ const standardItems = computed (() => {
   return store.state.recommendlist.standardItems;
 });
 store.dispatch ("recommendlist/getRecommendListMessages", 8);
-// const recommendMessages = async () => {
-//   const {data: res} = await getPersonalized (8, getCookie ());
-//   const standardItems = res.result;
-//   //处理歌单数据的播放量
-//   standardItems.forEach (item => {
-//     if (item.playCount / 10000 > 1) {
-//       item.playCount = Math.round ((item.playCount / 10000)) + "万";
-//     } else {
-//       item.playCount = item.playCount.toString ();
-//     }
-//   });
-//   return standardItems;
-// };
-// console.log (await recommendMessages ());
-// let standardItems = reactive ([]);
-// standardItems = await recommendMessages ();
-const UpdateTheRecommendedPlaylist = () => {
-  // standardItems = await recommendMessages ();
-  // console.log (standardItems);
-  store.dispatch ("recommendlist/getRecommendListMessages", 8);
-};
 const {data: album} = await getAlbumList (10);
 const standardAlbums = album.products;
-// let keyMap = {
-//   "coverUrl": "picUrl"
-// };
-// standardAlbums.forEach (item => {
-//   for (let key in item) {
-//     let newKey = keyMap[key];
-//     if (newKey) {
-//       item[newKey] = item[key];
-//       delete item[key];
-//     }
-//   }
-// });
-//请求榜单数据
 let {data: daily} = await getList (10, 0, 1, "daily", getCookie ());
 daily.products = daily.products.splice (10);
 const dailyLists = daily.products;
@@ -75,8 +41,6 @@ let {data: year} = await getList (null, null, 1, "year", getCookie ());
 const yearLists = year.products;
 </script>
 <template>
-  <!--  <suspense>-->
-  <!--    <template #default>-->
   <div class="m_recommend">
     <div class="recommend_left">
       <!--      轮播图组件-->
@@ -126,16 +90,13 @@ const yearLists = year.products;
       <div class="recommend_right_container">
         <!--      推广app组件-->
         <download></download>
-        <login-box @UpdateTheRecommendedPlaylist="UpdateTheRecommendedPlaylist"
-                   v-if="isLogin===false"></login-box>
+        <login-box v-if="isLogin===false"></login-box>
         <user-box v-else></user-box>
         <resident-singer class="resident_singer"></resident-singer>
         <popular-anchors class="resident_singer"></popular-anchors>
       </div>
     </div>
   </div>
-  <!--    </template>-->
-  <!--  </suspense>-->
 </template>
 <style scoped lang="scss">
 .m_recommend {

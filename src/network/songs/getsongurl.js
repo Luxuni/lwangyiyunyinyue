@@ -8,4 +8,12 @@ function getSongUrl (id, br) {
         }
     });
 }
-export {getSongUrl};
+function getSongDetail (ids) {
+    return request ({
+        url: "/song/detail",
+        params: {
+            ids: ids,
+        }
+    });
+}
+export {getSongUrl,getSongDetail};

@@ -47,7 +47,20 @@ const router = createRouter ({
             components: {
                 SecondaryTabBar: () => import("@/components/tabbar/DefaultSecondaryTabBar.vue"),
                 default: () => import("@/main_views/MyMusic.vue")
-            }
+            },
+            children: [
+                {path: "", redirect: {name: "MyPlaylist"}},
+                {
+                    path: "my_playlist",
+                    name: "MyPlaylist",
+                    component: () => import("@/components/my_music/MyPlaylist.vue")
+                },
+                {
+                    path: "u_artists",
+                    name: "UserArtists",
+                    component: () => import("@/components/my_music/UserArtists.vue")
+                },
+            ]
         },
         {
             path: "/attention",

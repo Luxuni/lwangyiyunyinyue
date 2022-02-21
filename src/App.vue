@@ -20,8 +20,9 @@ import Player from "@/components/playmusic/Player.vue";
             </div>
           </div>
         </div>
+        <div class="push"></div>
         <div class="footer">
-          <player></player>
+          <player class="player"></player>
         </div>
       </div>
     </template>
@@ -33,7 +34,7 @@ import Player from "@/components/playmusic/Player.vue";
   min-height: 100%;
 
   .content {
-    height: calc(100% - 60px);
+    min-height: calc(100% - 60px);
 
     .m_view {
       display: flex;
@@ -41,17 +42,27 @@ import Player from "@/components/playmusic/Player.vue";
       background-color: #F5D7BE;
 
       .s_view {
-        width: 980px;
+
       }
     }
+  }
+
+  .push {
+    height: 60px;
   }
 
   .footer {
     position: fixed;
     height: 60px;
+    margin-top: 60px;
     left: 0;
     right: 0;
     bottom: 0;
+    z-index: 999999999;
+
+    .player {
+
+    }
   }
 }
 </style>
