@@ -75,7 +75,8 @@ const lickThis = scope => {
                 <use xlink:href="#icon-icon_play"></use>
               </svg>
             </el-button>
-            <el-popover trigger="click"
+            <el-popover class="popover"
+                        trigger="click"
                         v-model:visible="scope.row.deletePopover"
                         placement="top"
                         :width="160">
@@ -115,5 +116,6 @@ const lickThis = scope => {
   height: 400px;
   width: 980px;
 }
+
 
 </style>

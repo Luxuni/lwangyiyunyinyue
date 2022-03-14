@@ -93,6 +93,9 @@
   align-items: center;
 }
 
+.el-popover {
+  z-index: 9999999999!important;
+}
 ::-webkit-scrollbar {
   width: 7px;
   height: 5px;
