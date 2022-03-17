@@ -12,6 +12,7 @@ const banners = res.banners;
 </template>
 <style scoped lang="scss">
 .el-carousel__item {
+
   img {
     color: #475669;
     font-size: 18px;
