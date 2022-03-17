@@ -5,7 +5,7 @@ import 'element-plus/dist/index.css';//引入element-plus样式文件
 import {ElMessage} from "element-plus";//引入element-plus的ElMessage
 export function request (config) {
     const instance = axios.create ({
-        baseURL: "http://localhost:4000/",
+        baseURL: "https://netease-cloud-music-api-wheat-chi.vercel.app/",
         withCredentials: true,  // 允许请求携带 cookie
         validateStatus: function (status) {
             // 配置可以放行的状态码
